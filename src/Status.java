@@ -13,10 +13,4 @@ public enum Status {
         return message;
     }
 
-    @Override
-    public String toString() {
-        return "Status{" +
-                "message='" + message + '\'' +
-                '}';
-    }
 }
