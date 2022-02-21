@@ -7,7 +7,6 @@ public class Epic extends Task {
         super(title, description, status);
         this.subTasks = subTasks;
         super.status = updateStatus();
-
     }
 
     public void addSubTask(Subtask task) {
@@ -44,8 +43,9 @@ public class Epic extends Task {
         }
     }
 
-
-
+    public ArrayList<Subtask> getSubTasks() {
+        return subTasks;
+    }
 
     @Override
     public String toString() {

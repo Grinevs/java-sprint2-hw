@@ -24,7 +24,6 @@ public class Task {
         return this.id;
     }
 
-
     @Override
     public String toString() {
         return "Task{" +

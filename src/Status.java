@@ -12,5 +12,4 @@ public enum Status {
     public String getMessage() {
         return message;
     }
-
 }
