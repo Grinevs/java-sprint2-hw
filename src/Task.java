@@ -1,5 +1,5 @@
 public class Task {
-    private static int count = 0;
+
     private int id;
     private String title;
     private String description;
@@ -8,7 +8,7 @@ public class Task {
     public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
-        this.id = count++;
+        this.id = CounterId.newCount();
         this.status = status;
     }
 

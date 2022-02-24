@@ -11,6 +11,10 @@ public class Subtask extends Task {
         return epic;
     }
 
+    public int getEpicId() {
+        return epic.getId();
+    }
+
     @Override
     public String toString() {
         return super.toString() + "," + "Subtask{" +
@@ -18,4 +22,3 @@ public class Subtask extends Task {
                 "}";
     }
 }
-// так как незнаю формат получения на фронтэнде, я понимаю у нас полная импровизация? =)

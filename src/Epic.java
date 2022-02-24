@@ -1,11 +1,12 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Epic extends Task {
-    private ArrayList<Subtask> subTasks;
+    private final List<Subtask> subTasks;
 
-    public Epic(String title, String description, Status status, ArrayList<Subtask> subTasks) {
+    public Epic(String title, String description, Status status) {
         super(title, description, status);
-        this.subTasks = subTasks;
+        subTasks = new ArrayList<>();
         super.status = updateStatus();
     }
 
@@ -32,19 +33,14 @@ public class Epic extends Task {
                     countDone++;
                 }
             }
-            if (countNew == subTasks.size()) {
-
-                return Status.NEW;
-            } else if (countDone == subTasks.size()) {
-                return Status.DONE;
-            } else {
-                return Status.IN_PROGRESS;
-            }
+            if (countNew == subTasks.size()) return Status.NEW;
+            if (countDone == subTasks.size()) return Status.DONE;
+            return Status.IN_PROGRESS;
         }
     }
 
     public ArrayList<Subtask> getSubTasks() {
-        return subTasks;
+        return (ArrayList<Subtask>) subTasks;
     }
 
     @Override
