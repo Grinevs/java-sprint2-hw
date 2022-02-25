@@ -7,10 +7,7 @@ public class Manager {
     private final Map<Integer, Epic> epicMap = new HashMap<>();
     private final Map<Integer, Subtask> subTaskMap = new HashMap<>();
 
-    public Manager() {
-    }
-
-    public void getAllTasks() {
+    public void printAllTask () {
         printTasks();
         printEpicTasks();
         printSubTasks();

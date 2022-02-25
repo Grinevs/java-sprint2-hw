@@ -2,7 +2,7 @@ public class Main {
     public static void main(String[] args) {
         Manager manager = new Manager();
         addTestObjects(manager);
-        manager.getAllTasks();
+        manager.printAllTask ();
         System.out.println("Меняем статусы сабтасков");
         Subtask updateSub = new Subtask("updSUB", "С2", Status.NEW, manager.getEpic(2));
         manager.updateSubTask(updateSub, 4);
@@ -10,11 +10,11 @@ public class Main {
         manager.updateTask(updateTask, 0);
         Epic epicTask = new Epic("updEpic1", "С", Status.DONE);
         manager.updateEpic(epicTask, 3);
-        manager.getAllTasks();
+        manager.printAllTask ();
         System.out.println("Теперь удаление");
         manager.removeEpic(2);
         manager.removeTask(0);
-        manager.getAllTasks();
+        manager.printAllTask ();
     }
 
     public static void addTestObjects(Manager manager) {
