@@ -1,3 +1,7 @@
+package service;
+
+import model.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,7 +56,6 @@ public class Manager {
     public void updateTask(Task task, int id) {
         task.setId(id);
         taskMap.put(id, task);
-
     }
 
     public void updateEpic(Epic epic, int id) {

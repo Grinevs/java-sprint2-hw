@@ -1,3 +1,7 @@
+package model;
+
+import service.Status;
+
 public class Subtask extends Task {
     private Epic epic;
 
@@ -17,7 +21,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + "," + "Subtask{" +
+        return super.toString() + "," + "model.Subtask{" +
                 "epicId=" + epic.getId() +
                 "}";
     }

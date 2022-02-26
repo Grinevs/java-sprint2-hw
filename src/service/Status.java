@@ -1,3 +1,5 @@
+package service;
+
 public enum Status {
     NEW("new task"),
     IN_PROGRESS("task in progress"),

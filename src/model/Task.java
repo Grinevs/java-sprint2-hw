@@ -1,3 +1,8 @@
+package model;
+
+import service.CounterId;
+import service.Status;
+
 public class Task {
 
     private int id;
@@ -8,7 +13,7 @@ public class Task {
     public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
-        this.id = CounterId.newCount();
+        this.id = CounterId.generateId();
         this.status = status;
     }
 
@@ -26,7 +31,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" +
+        return "model.Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
