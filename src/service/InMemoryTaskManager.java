@@ -2,15 +2,15 @@ package service;
 
 import model.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskMap = new HashMap<>();
     private final Map<Integer, Epic> epicMap = new HashMap<>();
     private final Map<Integer, Subtask> subTaskMap = new HashMap<>();
-    HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
+    private final HistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     @Override
     public void printAllTask() {
@@ -122,7 +122,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void removeEpic(int id) {
         if (epicMap.containsKey(id)) {
-            ArrayList<Subtask> oldEpicTasks = epicMap.get(id).getSubTasks();
+            List<Subtask> oldEpicTasks = epicMap.get(id).getSubTasks();
             for (int i = 0; i < oldEpicTasks.size(); i++) {
                 subTaskMap.remove(oldEpicTasks.get(i).getId());
             }

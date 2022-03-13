@@ -1,7 +1,6 @@
 package model;
 
 import service.CounterId;
-import service.Status;
 
 public class Task {
 

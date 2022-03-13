@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private static List<Task> history = new ArrayList<>();
-
+    private static List<Task> history = new ArrayList<>(); // без статика не работает? как иначе это должно работать?
+                                                            // история она же одна
     @Override
     public List<Task> getHistory() {
         return history;
