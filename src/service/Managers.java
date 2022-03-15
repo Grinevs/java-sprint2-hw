@@ -8,7 +8,7 @@ public class Managers {
         return taskManager;
     }
 
-    public static HistoryManager getDefaultHistory () {
+    public static HistoryManager getDefaultHistory() {
         return historyManager;
     }
 }
