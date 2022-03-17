@@ -10,7 +10,7 @@ public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskMap = new HashMap<>();
     private final Map<Integer, Epic> epicMap = new HashMap<>();
     private final Map<Integer, Subtask> subTaskMap = new HashMap<>();
-    private final HistoryManager historyManager = Managers.getDefaultHistory();  // так это не работает, я пробовал
+  //  private final HistoryManager historyManager = Managers.getDefaultHistory();  // так это не работает, я пробовал
                                                                                 // .NullPointerException
     @Override                                                                   // а напрямую работает
     public void printAllTask() {
@@ -88,7 +88,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task getTask(int id) {
         if (taskMap.containsKey(id)) {
-            historyManager.add(taskMap.get(id));
+            Managers.getDefaultHistory().add(taskMap.get(id));
             return taskMap.get(id);
         }
         return null;
@@ -97,7 +97,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Epic getEpic(int id) {
         if (epicMap.containsKey(id)) {
-            historyManager.add(epicMap.get(id));
+            Managers.getDefaultHistory().add(epicMap.get(id));
             return epicMap.get(id);
         }
         return null;
@@ -106,7 +106,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Subtask getSubTask(int id) {
         if (subTaskMap.containsKey(id)) {
-            historyManager.add(subTaskMap.get(id));
+            Managers.getDefaultHistory().add(subTaskMap.get(id));
             return subTaskMap.get(id);
         }
         return null;
