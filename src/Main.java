@@ -3,7 +3,7 @@ import service.*;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager inMemoryTaskManager = Managers.getInstance().getDefault();
+        TaskManager inMemoryTaskManager = Managers.getDefault();
         addTestObjects(inMemoryTaskManager);
         inMemoryTaskManager.printAllTask();
         System.out.println("Меняем статусы сабтасков");

@@ -1,22 +1,20 @@
 package service;
 
 public class Managers {
-    private static Managers instance;
-    private static HistoryManager historyManager = new InMemoryHistoryManager();
-    private static TaskManager taskManager = new InMemoryTaskManager();
-
-    public static synchronized Managers getInstance() {
-        if (instance == null) {
-            instance = new Managers();
-        }
-        return instance;
-    }
+    private static TaskManager taskManager;
+    private static HistoryManager historyManager;
 
     public static TaskManager getDefault() {
+        if (taskManager == null) {
+            taskManager = new InMemoryTaskManager();
+        }
         return taskManager;
     }
 
     public static HistoryManager getDefaultHistory() {
+        if (historyManager == null) {
+            historyManager = new InMemoryHistoryManager();
+        }
         return historyManager;
     }
 }
