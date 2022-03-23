@@ -18,7 +18,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (history.size() < 10) {
             history.add(task);
         } else {
-            history.remove(0);
+            remove(0);
             history.add(task);
         }
     }
@@ -27,4 +27,6 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         history.remove(id);
     }
+
+
 }
