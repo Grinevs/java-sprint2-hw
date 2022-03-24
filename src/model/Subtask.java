@@ -19,7 +19,7 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + "," + "model.Subtask{" +
+        return super.toString() +
                 "epicId=" + epic.getId() +
                 "}";
     }

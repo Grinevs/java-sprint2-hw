@@ -15,18 +15,11 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (history.size() < 10) {
-            history.linkLast(task);
-        } else {
-            remove(0);
-            history.linkLast(task);
-        }
+        history.linkLast(task);
     }
 
     @Override
     public void remove(int id) {
         history.remove(id);
     }
-
-
 }

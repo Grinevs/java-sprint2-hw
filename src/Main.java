@@ -13,11 +13,11 @@ public class Main {
         inMemoryTaskManager.updateTask(updateTask, 0);
         Epic epicTask = new Epic("updEpic1", "С", Status.DONE);
         inMemoryTaskManager.updateEpic(epicTask, 3);
-        inMemoryTaskManager.printAllTask ();
+        inMemoryTaskManager.printAllTask();
         System.out.println("Теперь удаление");
         inMemoryTaskManager.removeEpic(2);
         inMemoryTaskManager.removeTask(0);
-        inMemoryTaskManager.printAllTask ();
+        inMemoryTaskManager.printAllTask();
         System.out.println("история");
         System.out.println(Managers.getDefaultHistory().getHistory());
     }
@@ -37,5 +37,13 @@ public class Main {
         inMemoryTaskManager.getSubTaskMap().put(subTask.getId(), subTask);
         inMemoryTaskManager.getSubTaskMap().put(subTask2.getId(), subTask2);
         inMemoryTaskManager.getSubTaskMap().put(subTask3.getId(), subTask3);
+        Managers.getDefault().getTask(0);
+        Managers.getDefault().getTask(1);
+        Managers.getDefault().getEpic(2);
+        Managers.getDefault().getEpic(3);
+        Managers.getDefault().getSubTask(4);
+        Managers.getDefault().getSubTask(5);
+        Managers.getDefault().getSubTask(6);
+
     }
 }

@@ -30,8 +30,7 @@ public class Task {
 
     @Override
     public String toString() {
-        return "model.Task{" +
-                "id=" + id +
+        return this.getClass().getSimpleName() +" {id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
