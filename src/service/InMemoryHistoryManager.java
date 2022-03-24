@@ -3,8 +3,6 @@ package service;
 import model.MyLinkedList;
 import model.Task;
 
-import java.sql.ClientInfoStatus;
-import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {

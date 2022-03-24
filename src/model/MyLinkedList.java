@@ -2,69 +2,68 @@ package model;
 
 import java.util.*;
 
-public class MyLinkedList<Task> {
-    private Node<Task> first;
-    private Node<Task> last;
+public class MyLinkedList<E> {
+    private Node<E> first;
+    private Node<E> last;
     private int size = 0;
-    private List<Task> tasks= new ArrayList<>();
-    private Map<Integer, Node<Task>> indexMap = new HashMap<>();
+    private List<E> tasks = new ArrayList<>();
+    private Map<Integer, Node<E>> indexMap = new HashMap<>();
 
-    public void linkLast(Task e) {
-        final Node<Task> l = last;
-        final Node<Task> newNode = new Node<>(l, e, null);
+    public void linkLast(E e) {
+        final Node<E> l = last;
+        final Node<E> newNode = new Node<>(l, e, null);
         last = newNode;
         if (l == null)
             first = newNode;
         else
             l.next = newNode;
         size++;
-        tasks.add(e);
-        indexMap.put(e.getId, last);
+        add(newNode);
     }
 
-    public void linkFirst(Task e) {
-        final Node<Task> f = first;
-        final Node<Task> newNode = new Node<>(null, e, f);
-        first = newNode;
-        if (f == null)
-            last = newNode;
-        else
-            f.prev = newNode;
-        size++;
+    public void add(Node<E> node) {
+        int id = ((Task) node.item).getId();
+        remove(id);
+        indexMap.put(id, node);
     }
 
-    public void removeNode(Node<Task> x) {
-        if (tasks.contains(x.item)) {
-            final Node<Task> next = x.next;
-            final Node<Task> prev = x.prev;
-
-            if (prev == null) {
-                first = next;
-            } else {
-                prev.next = next;
-                x.prev = null;
-            }
-
-            if (next == null) {
-                last = prev;
-            } else {
-                next.prev = prev;
-                x.next = null;
-            }
-            x.item = null;
-            size--;
+    public void removeNode(Node<E> x) {
+        final Node<E> next = x.next;
+        final Node<E> prev = x.prev;
+        if (prev == null) {
+            first = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
         }
+        if (next == null) {
+            last = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+        x.item = null;
+        size--;
     }
 
     public int size() {
         return this.size;
     }
 
-    public List<Task> getTasks() {
+    public List<E> getTasks() {
+        for (Node<E> x = first; x != null; ) {
+            Node<E> next = x.next;
+            tasks.add(x.item);
+            x = next;
+        }
         return tasks;
     }
 
     public void remove(int id) {
+        if (indexMap.containsKey(id)) {
+            Node<E> removeNode = indexMap.get(id);
+            removeNode(removeNode);
+        }
     }
 }
 
