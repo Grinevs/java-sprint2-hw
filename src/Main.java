@@ -41,9 +41,6 @@ public class Main {
         Managers.getDefault().getTask(1);
         Managers.getDefault().getEpic(2);
         Managers.getDefault().getEpic(3);
-        Managers.getDefault().getSubTask(4);
-        Managers.getDefault().getSubTask(5);
-        Managers.getDefault().getSubTask(6);
         Managers.getDefault().getTask(0);
         Managers.getDefault().getTask(1);
         Managers.getDefault().getEpic(2);
@@ -51,6 +48,8 @@ public class Main {
         Managers.getDefault().getSubTask(4);
         Managers.getDefault().getSubTask(5);
         Managers.getDefault().getSubTask(6);
-
+        Managers.getDefault().getSubTask(4);
+        Managers.getDefault().getSubTask(5);
+        Managers.getDefault().getSubTask(6);
     }
 }
