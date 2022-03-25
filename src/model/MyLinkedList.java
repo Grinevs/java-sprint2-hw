@@ -9,14 +9,14 @@ public class MyLinkedList<E> {
     private List<E> tasks = new ArrayList<>();
     private Map<Integer, Node<E>> indexMap = new HashMap<>();
 
-    public void linkLast(E e) {
-        final Node<E> l = last;
-        final Node<E> newNode = new Node<>(l, e, null);
+    public void linkLast(E item) {
+        final Node<E> prevItem = last;
+        final Node<E> newNode = new Node<>(prevItem, item, null);
         last = newNode;
-        if (l == null)
+        if (prevItem == null)
             first = newNode;
         else
-            l.next = newNode;
+            prevItem.next = newNode;
         size++;
         add(newNode);
     }
@@ -27,22 +27,22 @@ public class MyLinkedList<E> {
         indexMap.put(id, node);
     }
 
-    public void removeNode(Node<E> x) {
-        final Node<E> next = x.next;
-        final Node<E> prev = x.prev;
+    public void removeNode(Node<E> item) {
+        final Node<E> next = item.next;
+        final Node<E> prev = item.prev;
         if (prev == null) {
             first = next;
         } else {
             prev.next = next;
-            x.prev = null;
+            item.prev = null;
         }
         if (next == null) {
             last = prev;
         } else {
             next.prev = prev;
-            x.next = null;
+            item.next = null;
         }
-        x.item = null;
+        item.item = null;
         size--;
     }
 
@@ -51,10 +51,10 @@ public class MyLinkedList<E> {
     }
 
     public List<E> getTasks() {
-        for (Node<E> x = first; x != null; ) {
-            Node<E> next = x.next;
-            tasks.add(x.item);
-            x = next;
+        for (Node<E> item = first; item != null; ) {
+            Node<E> next = item.next;
+            tasks.add(item.item);
+            item = next;
         }
         return tasks;
     }

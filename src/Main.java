@@ -5,6 +5,7 @@ public class Main {
     public static void main(String[] args) {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         addTestObjects(inMemoryTaskManager);
+        System.out.println(Managers.getDefaultHistory().getHistory());
         inMemoryTaskManager.printAllTask();
         System.out.println("Меняем статусы сабтасков");
         Subtask updateSub = new Subtask("updSUB", "С2", Status.NEW, inMemoryTaskManager.getEpic(2));
