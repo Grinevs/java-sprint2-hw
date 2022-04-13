@@ -9,6 +9,12 @@ public class Subtask extends Task {
         epic.addSubTask(this);
     }
 
+    public Subtask(String title, String description, Status status, Epic epic, int id) {
+        super(title, description, status, id);
+        this.epic = epic;
+        epic.addSubTask(this);
+    }
+
     public Epic getEpic() {
         return epic;
     }
@@ -20,7 +26,6 @@ public class Subtask extends Task {
     @Override
     public String toString() {
         return super.toString() +
-                "epicId=" + epic.getId() +
-                "}";
+                "," + epic.getId();
     }
 }

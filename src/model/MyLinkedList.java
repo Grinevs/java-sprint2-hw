@@ -6,7 +6,6 @@ public class MyLinkedList<E> {
     private Node<E> first;
     private Node<E> last;
     private int size = 0;
-    private List<E> tasks = new ArrayList<>();
     private Map<Integer, Node<E>> indexMap = new HashMap<>();
 
     public void linkLast(E item) {
@@ -25,6 +24,14 @@ public class MyLinkedList<E> {
         int id = ((Task) node.item).getId();
         remove(id);
         indexMap.put(id, node);
+    }
+
+    public void remove(int id) {
+        if (indexMap.containsKey(id)) {
+            Node<E> removeNode = indexMap.get(id);
+            removeNode(removeNode);
+            indexMap.remove(id);
+        }
     }
 
     public void removeNode(Node<E> item) {
@@ -51,6 +58,8 @@ public class MyLinkedList<E> {
     }
 
     public List<E> getTasks() {
+        List<E> tasks = new ArrayList<>();
+
         for (Node<E> item = first; item != null; ) {
             Node<E> next = item.next;
             tasks.add(item.item);
@@ -59,12 +68,19 @@ public class MyLinkedList<E> {
         return tasks;
     }
 
-    public void remove(int id) {
-        if (indexMap.containsKey(id)) {
-            Node<E> removeNode = indexMap.get(id);
-            removeNode(removeNode);
+    public void clear() {
+        for (Node<E> x = first; x != null; ) {
+            Node<E> next = x.next;
+            x.item = null;
+            x.next = null;
+            x.prev = null;
+            x = next;
         }
+        first = last = null;
+        size = 0;
+        indexMap.clear();
     }
+
 }
 
 

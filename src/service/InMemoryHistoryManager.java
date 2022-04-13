@@ -22,4 +22,10 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void remove(int id) {
         history.remove(id);
     }
+
+    @Override
+    public void removeAll() {
+        history.clear();
+    }
+
 }

@@ -21,6 +21,8 @@ public interface TaskManager {
 
     Map<Integer, Subtask> getSubTaskMap();
 
+    Map<Integer, Task> getAllTaskMap();
+
     void updateSubTask(Subtask subtask, int id);
 
     void updateTask(Task task, int id);

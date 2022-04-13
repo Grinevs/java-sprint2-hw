@@ -5,6 +5,7 @@ import model.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class InMemoryTaskManager implements TaskManager {
     private final Map<Integer, Task> taskMap = new HashMap<>();
@@ -56,21 +57,35 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public Map<Integer, Task> getAllTaskMap() {
+        Map<Integer, Task> tasksMap = new TreeMap<>();
+        tasksMap.putAll(taskMap);
+        tasksMap.putAll(epicMap);
+        tasksMap.putAll(subTaskMap);
+        return tasksMap;
+    }
+
+    @Override
     public void updateSubTask(Subtask subtask, int id) {
+        Managers.getDefaultHistory().remove(id);
         subtask.setId(id);
         removeSubTask(id);
         subTaskMap.put(id, subtask);
+        Managers.getDefaultHistory().add(subtask);
     }
 
     @Override
     public void updateTask(Task task, int id) {
+        Managers.getDefaultHistory().remove(id);
         task.setId(id);
         taskMap.put(id, task);
+        Managers.getDefaultHistory().add(task);
     }
 
     @Override
     public void updateEpic(Epic epic, int id) {
         Epic oldEpic = epicMap.get(id);
+        Managers.getDefaultHistory().remove(id);
         for (int i = 0; i < oldEpic.getSubTasks().size(); i++) {
             int subId = oldEpic.getSubTasks().get(i).getId();
             removeSubTask(subId);
@@ -83,6 +98,7 @@ public class InMemoryTaskManager implements TaskManager {
                 subTaskMap.put(subId, epic.getSubTasks().get(i));
             }
         }
+        Managers.getDefaultHistory().add(epic);
     }
 
     @Override

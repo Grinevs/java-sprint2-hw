@@ -12,7 +12,7 @@ public class Main {
         inMemoryTaskManager.updateSubTask(updateSub, 4);
         Task updateTask = new Task("updTask1", "1задание", Status.DONE);
         inMemoryTaskManager.updateTask(updateTask, 0);
-        Epic epicTask = new Epic("updEpic1", "С", Status.DONE);
+        Epic epicTask = new Epic("updEpic1", "Сjj", Status.DONE);
         inMemoryTaskManager.updateEpic(epicTask, 3);
         inMemoryTaskManager.printAllTask();
         System.out.println("Теперь удаление");
@@ -20,6 +20,12 @@ public class Main {
         inMemoryTaskManager.removeTask(0);
         inMemoryTaskManager.printAllTask();
         System.out.println("история");
+        System.out.println(Managers.getDefaultHistory().getHistory());
+        FileBackedTasksManager.save();
+        FileBackedTasksManager.readFile();
+        System.out.println("Таски из файла");
+        inMemoryTaskManager.printAllTask();
+        System.out.println("история из файла");
         System.out.println(Managers.getDefaultHistory().getHistory());
     }
 

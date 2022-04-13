@@ -16,6 +16,13 @@ public class Task {
         this.status = status;
     }
 
+    public Task(String title, String description, Status status, int id) {
+        this.title = title;
+        this.description = description;
+        this.id = id;
+        this.status = status;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -30,10 +37,8 @@ public class Task {
 
     @Override
     public String toString() {
-        return this.getClass().getSimpleName() +" {id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
-                '}';
+        return id + "," + this.getClass().getSimpleName() + "," +
+                title + "," + status +
+                "," + description;
     }
 }

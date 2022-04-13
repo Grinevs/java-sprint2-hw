@@ -12,6 +12,13 @@ public class Epic extends Task {
         super.status = Status.NEW;
     }
 
+    public Epic(String title, String description, Status status, int id) {
+        super(title, description, status, id);
+        subTasks = new ArrayList<>();
+        super.status = Status.NEW;
+    }
+
+
     public void addSubTask(Subtask task) {
         subTasks.add(task);
         super.status = updateStatus();
