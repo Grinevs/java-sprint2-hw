@@ -3,7 +3,8 @@ import service.*;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
+        TaskManager inMemoryTaskManager = Managers.getDefaultDB();
+        // проверяем все через файлы
         addTestObjects(inMemoryTaskManager);
         System.out.println(Managers.getDefaultHistory().getHistory());
         inMemoryTaskManager.printAllTask();
@@ -44,19 +45,19 @@ public class Main {
         inMemoryTaskManager.getSubTaskMap().put(subTask.getId(), subTask);
         inMemoryTaskManager.getSubTaskMap().put(subTask2.getId(), subTask2);
         inMemoryTaskManager.getSubTaskMap().put(subTask3.getId(), subTask3);
-        Managers.getDefault().getTask(0);
-        Managers.getDefault().getTask(1);
-        Managers.getDefault().getEpic(2);
-        Managers.getDefault().getEpic(3);
-        Managers.getDefault().getTask(0);
-        Managers.getDefault().getTask(1);
-        Managers.getDefault().getEpic(2);
-        Managers.getDefault().getEpic(3);
-        Managers.getDefault().getSubTask(4);
-        Managers.getDefault().getSubTask(5);
-        Managers.getDefault().getSubTask(6);
-        Managers.getDefault().getSubTask(4);
-        Managers.getDefault().getSubTask(5);
-        Managers.getDefault().getSubTask(6);
+        Managers.getDefaultDB().getTask(0);
+        Managers.getDefaultDB().getTask(1);
+        Managers.getDefaultDB().getEpic(2);
+        Managers.getDefaultDB().getEpic(3);
+        Managers.getDefaultDB().getTask(0);
+        Managers.getDefaultDB().getTask(1);
+        Managers.getDefaultDB().getEpic(2);
+        Managers.getDefaultDB().getEpic(3);
+        Managers.getDefaultDB().getSubTask(4);
+        Managers.getDefaultDB().getSubTask(5);
+        Managers.getDefaultDB().getSubTask(6);
+        Managers.getDefaultDB().getSubTask(4);
+        Managers.getDefaultDB().getSubTask(5);
+        Managers.getDefaultDB().getSubTask(6);
     }
 }

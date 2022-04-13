@@ -1,6 +1,7 @@
 package service;
 
 public class Managers {
+    private static TaskManager taskManagerDB;
     private static TaskManager taskManager;
     private static HistoryManager historyManager;
 
@@ -9,6 +10,13 @@ public class Managers {
             taskManager = new InMemoryTaskManager();
         }
         return taskManager;
+    }
+
+    public static TaskManager getDefaultDB() {
+        if (taskManagerDB == null) {
+            taskManagerDB = new FileBackedTasksManager();
+        }
+        return taskManagerDB;
     }
 
     public static HistoryManager getDefaultHistory() {

@@ -73,7 +73,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public static void save() {
         try (FileWriter writer = new FileWriter(String.valueOf(getUriDb()));
              BufferedWriter bw = new BufferedWriter(writer)) {
-            for (Task task : Managers.getDefault().getAllTaskMap().values()) {
+            for (Task task : Managers.getDefaultDB().getAllTaskMap().values()) {
                 bw.write(task.toString() + "\n");
             }
             bw.newLine();
@@ -127,4 +127,32 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         super.removeAll();
         save();
     }
+
+    @Override
+    public Task getTask(int id) {
+        if (super.getTask(id) != null) {
+            save();
+            return super.getTask(id);
+        }
+        return null;
+    }
+
+    @Override
+    public Epic getEpic(int id) {
+        if (super.getEpic(id) != null) {
+            save();
+            return super.getEpic(id);
+        }
+        return null;
+    }
+
+    @Override
+    public Subtask getSubTask(int id) {
+        if (super.getSubTask(id) != null) {
+            save();
+            return super.getSubTask(id);
+        }
+        return null;
+    }
+
 }
