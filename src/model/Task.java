@@ -1,6 +1,6 @@
 package model;
 
-import service.CounterId;
+import service.Managers;
 
 public class Task {
 
@@ -12,7 +12,7 @@ public class Task {
     public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
-        this.id = CounterId.generateId();
+        this.id = Managers.getCounterId().generateId();
         this.status = status;
     }
 

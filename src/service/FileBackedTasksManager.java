@@ -11,10 +11,17 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
-    private static final String WORKDIR = System.getProperty("user.dir");
+    private static final String WORK_DIR = System.getProperty("user.dir");
+    private static final String LINE_DELIMITER = "\n";
+    private static final String ITEM_DELIMITER = ",";
+    Path dbPath;
 
-    public static Path getUriDb() {
-        Path dbPath = Paths.get(WORKDIR, "src", "db", "db.csv");
+    public FileBackedTasksManager() {
+        this.dbPath = Paths.get(WORK_DIR, "src", "db", "db.csv");
+        readFile(this.dbPath);
+    }
+    
+    public Path getUriDb() {
         return dbPath;
     }
 
@@ -41,17 +48,16 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     }
 
     public static void historyFromString(String value) {
-        String[] words = value.split(",");
+        Managers.getDefaultHistory().removeAll();
+        String[] words = value.split(ITEM_DELIMITER);
         for (int i = 0; i < words.length; i++) {
             Task task = Managers.getDefault().getAllTaskMap().get(Integer.parseInt(words[i]));
             Managers.getDefaultHistory().add(task);
         }
     }
 
-    public static void readFile() {
-        Managers.getDefault().removeAll();
-        Managers.getDefaultHistory().removeAll();
-        try (FileReader reader = new FileReader(String.valueOf(getUriDb()));
+    public void readFile(Path path) {
+        try (FileReader reader = new FileReader(String.valueOf(path));
              BufferedReader br = new BufferedReader(reader)) {
             while (br.ready()) {
                 String line = br.readLine().trim();
@@ -64,22 +70,23 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     }
                     break;
                 }
+                Managers.getDefaultHistory().removeAll();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void save() {
+    public void save() {
         try (FileWriter writer = new FileWriter(String.valueOf(getUriDb()));
              BufferedWriter bw = new BufferedWriter(writer)) {
-            for (Task task : Managers.getDefaultDB().getAllTaskMap().values()) {
-                bw.write(task.toString() + "\n");
+            for (Task task : Managers.getDefault().getAllTaskMap().values()) {
+                bw.write(task.toString() + LINE_DELIMITER);
             }
             bw.newLine();
             List<Task> taskMap = Managers.getDefaultHistory().getHistory();
             for (Task task : taskMap) {
-                bw.write(task.getId() + ",");
+                bw.write(task.getId() + ITEM_DELIMITER);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,5 +161,4 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
         return null;
     }
-
 }

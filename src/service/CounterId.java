@@ -4,13 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CounterId {
-    private static int count = 0;
+    private int count;
     private static List<Integer> usedId = new ArrayList<>();
 
-    public static int generateId() {
+    public CounterId(int id) {
+        this.count = id;
+    }
+
+    public int generateId() {
         while (isContainsId(count)) {
             count++;
         }
+        addUsedId(count);
         return count++;
     }
 

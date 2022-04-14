@@ -8,9 +8,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class InMemoryTaskManager implements TaskManager {
-    private final Map<Integer, Task> taskMap = new HashMap<>();
-    private final Map<Integer, Epic> epicMap = new HashMap<>();
-    private final Map<Integer, Subtask> subTaskMap = new HashMap<>();
+    private static final Map<Integer, Task> taskMap = new HashMap<>();
+    private static final Map<Integer, Epic> epicMap = new HashMap<>();
+    private static final Map<Integer, Subtask> subTaskMap = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
@@ -69,7 +69,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateSubTask(Subtask subtask, int id) {
         Managers.getDefaultHistory().remove(id);
         subtask.setId(id);
-        removeSubTask(id);
         subTaskMap.put(id, subtask);
         Managers.getDefaultHistory().add(subtask);
     }
@@ -84,11 +83,13 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic, int id) {
-        Epic oldEpic = epicMap.get(id);
-        Managers.getDefaultHistory().remove(id);
-        for (int i = 0; i < oldEpic.getSubTasks().size(); i++) {
-            int subId = oldEpic.getSubTasks().get(i).getId();
-            removeSubTask(subId);
+            Epic oldEpic = epicMap.get(id);
+        if (oldEpic != null) {
+            Managers.getDefaultHistory().remove(id);
+            for (int i = 0; i < oldEpic.getSubTasks().size(); i++) {
+                int subId = oldEpic.getSubTasks().get(i).getId();
+                removeSubTask(subId);
+            }
         }
         epic.setId(id);
         epicMap.put(id, epic);
@@ -151,8 +152,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void removeSubTask(int id) {
-        Subtask subtask = subTaskMap.get(id);
-        int epicId = subtask.getEpicId();
+        int epicId = subTaskMap.get(id).getEpicId();
         epicMap.get(epicId).removeSubTask(getSubTask(id));
         if (subTaskMap.containsKey(id)) {
             subTaskMap.remove(id);
@@ -166,4 +166,5 @@ public class InMemoryTaskManager implements TaskManager {
         epicMap.clear();
         subTaskMap.clear();
     }
+
 }
