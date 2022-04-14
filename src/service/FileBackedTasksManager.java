@@ -14,7 +14,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private static final String WORK_DIR = System.getProperty("user.dir");
     private static final String LINE_DELIMITER = "\n";
     private static final String ITEM_DELIMITER = ",";
-    Path dbPath;
+    private static final String TASK_STRING = "Task";
+    private static final String EPIC_STRING = "Epic";
+    private static final String SUBTASK_STRING = "Subtask";
+    private final Path dbPath;
 
     public FileBackedTasksManager() {
         this.dbPath = Paths.get(WORK_DIR, "src", "db", "db.csv");
@@ -28,17 +31,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public static Task taskFromString(String value) {
         String[] words = value.split(",");
         CounterId.addUsedId(Integer.parseInt(words[0]));
-        if (words[1].equalsIgnoreCase("Task")) {
+        if (words[1].equalsIgnoreCase(TASK_STRING)) {
             Task task = new Task(words[2], words[4], Status.valueOf(words[3]), Integer.parseInt(words[0]));
             Managers.getDefault().getTaskMap().put(task.getId(), task);
             return task;
         }
-        if (words[1].equalsIgnoreCase("Epic")) {
+        if (words[1].equalsIgnoreCase(EPIC_STRING)) {
             Task task = new Epic(words[2], words[4], Status.valueOf(words[3]), Integer.parseInt(words[0]));
             Managers.getDefault().getEpicMap().put(task.getId(), (Epic) task);
             return task;
         }
-        if (words[1].equalsIgnoreCase("Subtask")) {
+        if (words[1].equalsIgnoreCase(SUBTASK_STRING)) {
             Task task = new Subtask(words[2], words[4], Status.valueOf(words[3]),
                     Managers.getDefault().getEpic(Integer.parseInt(words[5])), Integer.parseInt(words[0]));
             Managers.getDefault().getSubTaskMap().put(task.getId(), (Subtask) task);
