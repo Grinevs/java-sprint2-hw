@@ -17,45 +17,60 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private static final String TASK_STRING = "Task";
     private static final String EPIC_STRING = "Epic";
     private static final String SUBTASK_STRING = "Subtask";
+    private static final String SOURCE_DIR = "src";
+    private static final String DB_DIR = "db";
+    private static final String DB_FILE = "db.csv";
+    private static final int TASK_ID = 0;
+    private static final int TASK_TYPE = 1;
+    private static final int TASK_NAME = 2;
+    private static final int TASK_STATUS = 3;
+    private static final int TASK_INFO = 4;
+    private static final int SUBTASK_EPIC = 5;
+
+    private final TaskManager taskManager = Managers.getDefault();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final Path dbPath;
 
     public FileBackedTasksManager() {
-        this.dbPath = Paths.get(WORK_DIR, "src", "db", "db.csv");
+        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, DB_FILE);
         readFile(this.dbPath);
     }
-    
+
     public Path getUriDb() {
         return dbPath;
     }
 
-    public static Task taskFromString(String value) {
-        String[] words = value.split(",");
-        CounterId.addUsedId(Integer.parseInt(words[0]));
-        if (words[1].equalsIgnoreCase(TASK_STRING)) {
-            Task task = new Task(words[2], words[4], Status.valueOf(words[3]), Integer.parseInt(words[0]));
-            Managers.getDefault().getTaskMap().put(task.getId(), task);
+    public Task taskFromString(String value) {
+        String[] words = value.split(ITEM_DELIMITER);
+        CounterId.addUsedId(Integer.parseInt(words[TASK_ID]));
+        if (words[TASK_TYPE].equalsIgnoreCase(TASK_STRING)) {
+            Task task = new Task(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
+                    Integer.parseInt(words[TASK_ID]));
+            taskManager.getTaskMap().put(task.getId(), task);
             return task;
         }
-        if (words[1].equalsIgnoreCase(EPIC_STRING)) {
-            Task task = new Epic(words[2], words[4], Status.valueOf(words[3]), Integer.parseInt(words[0]));
-            Managers.getDefault().getEpicMap().put(task.getId(), (Epic) task);
+        if (words[TASK_TYPE].equalsIgnoreCase(EPIC_STRING)) {
+            Task task = new Epic(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
+                    Integer.parseInt(words[TASK_ID]));
+            taskManager.getEpicMap().put(task.getId(), (Epic) task);
             return task;
         }
-        if (words[1].equalsIgnoreCase(SUBTASK_STRING)) {
-            Task task = new Subtask(words[2], words[4], Status.valueOf(words[3]),
-                    Managers.getDefault().getEpic(Integer.parseInt(words[5])), Integer.parseInt(words[0]));
-            Managers.getDefault().getSubTaskMap().put(task.getId(), (Subtask) task);
+        if (words[TASK_TYPE].equalsIgnoreCase(SUBTASK_STRING)) {
+            Task task = new Subtask(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
+                    taskManager.getEpic(Integer.parseInt(words[SUBTASK_EPIC])),
+                    Integer.parseInt(words[TASK_ID]));
+            taskManager.getSubTaskMap().put(task.getId(), (Subtask) task);
             return task;
         }
         return null;
     }
 
-    public static void historyFromString(String value) {
-        Managers.getDefaultHistory().removeAll();
+    public void historyFromString(String value) {
+        historyManager.removeAll();
         String[] words = value.split(ITEM_DELIMITER);
         for (int i = 0; i < words.length; i++) {
-            Task task = Managers.getDefault().getAllTaskMap().get(Integer.parseInt(words[i]));
-            Managers.getDefaultHistory().add(task);
+            Task task = taskManager.getAllTaskMap().get(Integer.parseInt(words[i]));
+            historyManager.add(task);
         }
     }
 
@@ -73,7 +88,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
                     }
                     break;
                 }
-                Managers.getDefaultHistory().removeAll();
+                historyManager.removeAll();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,11 +98,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     public void save() {
         try (FileWriter writer = new FileWriter(String.valueOf(getUriDb()));
              BufferedWriter bw = new BufferedWriter(writer)) {
-            for (Task task : Managers.getDefault().getAllTaskMap().values()) {
+            for (Task task : taskManager.getAllTaskMap().values()) {
                 bw.write(task.toString() + LINE_DELIMITER);
             }
             bw.newLine();
-            List<Task> taskMap = Managers.getDefaultHistory().getHistory();
+            List<Task> taskMap = historyManager.getHistory();
             for (Task task : taskMap) {
                 bw.write(task.getId() + ITEM_DELIMITER);
             }
