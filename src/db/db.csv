@@ -12,5 +12,12 @@
 11,Subtask,Яндекс subTask1,DONE,е,9
 12,Subtask,Яндекс subTask2,NEW,5,9
 13,Subtask,Яндекс subTask3,DONE,5,10
+14,Task,Task1,NEW,1задание
+15,Task,Task2,DONE,задание2
+16,Epic,epicTask1,IN_PROGRESS,С
+17,Epic,epicTask2,DONE,С
+18,Subtask,Яндекс subTask1,DONE,е,16
+19,Subtask,Яндекс subTask2,NEW,5,16
+20,Subtask,Яндекс subTask3,DONE,5,17
 
-0,1,2,3,4,5,6,7,8,9,10,11,12,13,
+0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
