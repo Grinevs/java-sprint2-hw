@@ -1,17 +1,17 @@
 package service;
 
-import model.*;
+import model.Epic;
+import model.Subtask;
+import model.Task;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
     private static final Map<Integer, Task> taskMap = new HashMap<>();
     private static final Map<Integer, Epic> epicMap = new HashMap<>();
     private static final Map<Integer, Subtask> subTaskMap = new HashMap<>();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final CounterId counterId = Managers.getCounterId();
 
     @Override
     public void printAllTask() {
@@ -66,6 +66,40 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
+    public void printSortAllTaskMap() {
+        getAllTaskMap().forEach((integer, task) -> System.out.println(task.toString()));
+    }
+
+    @Override
+    public Set<Task> getPrioritizedTasks() {
+        Comparator<Task> comp = Comparator.nullsLast(Comparator.comparing(Task::getStartTime)
+                .thenComparing(Task::getId));
+        Set<Task> tasksByDate = new TreeSet<>(comp);
+        getAllTaskMap().forEach((integer, task) -> tasksByDate.add(task));
+        return tasksByDate;
+    }
+
+    @Override
+    public void printSortByDateAllTasks() {
+        getPrioritizedTasks().forEach((task) -> System.out.println(task.toString()));
+    }
+
+    @Override
+    public void addTask(Task task) {
+        taskMap.put(task.getId(), task);
+    }
+
+    @Override
+    public void addSubTask(Subtask subTask) {
+        subTaskMap.put(subTask.getId(), subTask);
+    }
+
+    @Override
+    public void addEpic(Epic epic) {
+        epicMap.put(epic.getId(), epic);
+    }
+
+    @Override
     public void updateSubTask(Subtask subtask, int id) {
         Managers.getDefaultHistory().remove(id);
         subtask.setId(id);
@@ -83,7 +117,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic, int id) {
-            Epic oldEpic = epicMap.get(id);
+        Epic oldEpic = epicMap.get(id);
         if (oldEpic != null) {
             Managers.getDefaultHistory().remove(id);
             for (int i = 0; i < oldEpic.getSubTasks().size(); i++) {

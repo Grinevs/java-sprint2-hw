@@ -5,6 +5,7 @@ import model.Subtask;
 import model.Task;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface TaskManager {
     void printAllTask();
@@ -22,6 +23,18 @@ public interface TaskManager {
     Map<Integer, Subtask> getSubTaskMap();
 
     Map<Integer, Task> getAllTaskMap();
+
+    void printSortAllTaskMap();
+
+    Set<Task> getPrioritizedTasks();
+
+    void printSortByDateAllTasks();
+
+    void addTask(Task task);
+
+    void addSubTask(Subtask subTask);
+
+    void addEpic(Epic epic);
 
     void updateSubTask(Subtask subtask, int id);
 

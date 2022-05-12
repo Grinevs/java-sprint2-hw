@@ -2,18 +2,24 @@ package model;
 
 import service.Managers;
 
-public class Task {
+import java.time.Duration;
+import java.time.LocalDateTime;
 
+public class Task {
     private int id;
     private String title;
     private String description;
     protected Status status;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
     public Task(String title, String description, Status status) {
         this.title = title;
         this.description = description;
         this.id = Managers.getCounterId().generateId();
         this.status = status;
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ZERO;
     }
 
     public Task(String title, String description, Status status, int id) {
@@ -21,6 +27,28 @@ public class Task {
         this.description = description;
         this.id = id;
         this.status = status;
+        this.startTime = LocalDateTime.now();
+        this.duration = Duration.ZERO;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        return startTime.plus(duration);
     }
 
     public String getTitle() {
@@ -35,10 +63,16 @@ public class Task {
         return this.id;
     }
 
+    public Status getStatus() {
+        return this.status;
+    }
+
     @Override
     public String toString() {
         return id + "," + this.getClass().getSimpleName() + "," +
                 title + "," + status +
-                "," + description;
+                "," + description +
+                "," + startTime +
+                "," + duration.toSeconds();
     }
 }

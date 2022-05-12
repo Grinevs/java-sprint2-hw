@@ -5,7 +5,7 @@ import java.util.List;
 
 public class CounterId {
     private int count;
-    private static List<Integer> usedId = new ArrayList<>();
+    private List<Integer> usedId = new ArrayList<>();
 
     public CounterId(int id) {
         this.count = id;
@@ -19,11 +19,11 @@ public class CounterId {
         return count++;
     }
 
-    public static void addUsedId(int id) {
+    public void addUsedId(int id) {
         usedId.add(id);
     }
 
-    public static Boolean isContainsId(int id) {
+    public Boolean isContainsId(int id) {
         return usedId.contains(id);
     }
 }

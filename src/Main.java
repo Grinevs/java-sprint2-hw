@@ -25,7 +25,7 @@ public class Main {
 //        fileTaskManager.removeTask(0);
 //        fileTaskManager.printAllTask();
         System.out.println("записи в история локально в паияти");
-        inMemoryTaskManager.printAllTask();
+        inMemoryTaskManager.printSortByDateAllTasks();
         System.out.println(Managers.getDefaultHistory().getHistory());
     }
 

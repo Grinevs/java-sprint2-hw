@@ -8,6 +8,8 @@ import model.Task;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager implements TaskManager {
@@ -25,10 +27,13 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private static final int TASK_NAME = 2;
     private static final int TASK_STATUS = 3;
     private static final int TASK_INFO = 4;
-    private static final int SUBTASK_EPIC = 5;
+    private static final int SUBTASK_EPIC = 7;
+    private static final int START_TIME = 5;
+    private static final int DURATION = 6;
 
     private final TaskManager taskManager = Managers.getDefault();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final CounterId counterId = Managers.getCounterId();
     private final Path dbPath;
 
     public FileBackedTasksManager() {
@@ -42,16 +47,20 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public Task taskFromString(String value) {
         String[] words = value.split(ITEM_DELIMITER);
-        CounterId.addUsedId(Integer.parseInt(words[TASK_ID]));
+        counterId.addUsedId(Integer.parseInt(words[TASK_ID]));
         if (words[TASK_TYPE].equalsIgnoreCase(TASK_STRING)) {
             Task task = new Task(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
                     Integer.parseInt(words[TASK_ID]));
+            task.setStartTime(LocalDateTime.parse(words[START_TIME]));
+            task.setDuration(Duration.ofSeconds(Integer.parseInt(words[DURATION])));
             taskManager.getTaskMap().put(task.getId(), task);
             return task;
         }
         if (words[TASK_TYPE].equalsIgnoreCase(EPIC_STRING)) {
             Task task = new Epic(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
                     Integer.parseInt(words[TASK_ID]));
+            task.setStartTime(LocalDateTime.parse(words[START_TIME]));
+            task.setDuration(Duration.ofSeconds(Integer.parseInt(words[DURATION])));
             taskManager.getEpicMap().put(task.getId(), (Epic) task);
             return task;
         }
@@ -59,6 +68,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             Task task = new Subtask(words[TASK_NAME], words[TASK_INFO], Status.valueOf(words[TASK_STATUS]),
                     taskManager.getEpic(Integer.parseInt(words[SUBTASK_EPIC])),
                     Integer.parseInt(words[TASK_ID]));
+            task.setStartTime(LocalDateTime.parse(words[START_TIME]));
+            task.setDuration(Duration.ofSeconds(Integer.parseInt(words[DURATION])));
             taskManager.getSubTaskMap().put(task.getId(), (Subtask) task);
             return task;
         }
