@@ -38,6 +38,20 @@ public class Epic extends Task {
         }
         int countNew = 0;
         int countDone = 0;
+        updateTime();
+        for (int i = 0; i < subTasks.size(); i++) {
+            if (subTasks.get(i).status == Status.NEW) {
+                countNew++;
+            } else if (subTasks.get(i).status == Status.DONE) {
+                countDone++;
+            }
+        }
+        if (countNew == subTasks.size()) return Status.NEW;
+        if (countDone == subTasks.size()) return Status.DONE;
+        return Status.IN_PROGRESS;
+    }
+
+    private void updateTime() {
         LocalDateTime firstTaskTime = getStartTime();
         LocalDateTime lastTaskTime = endTime;
         for (int i = 0; i < subTasks.size(); i++) {
@@ -46,18 +60,10 @@ public class Epic extends Task {
                     firstTaskTime : currentSub.getStartTime();
             lastTaskTime = lastTaskTime.isAfter(currentSub.getStartTime().plus(currentSub.getDuration())) ?
                     lastTaskTime : currentSub.getStartTime().plus(currentSub.getDuration());
-            if (subTasks.get(i).status == Status.NEW) {
-                countNew++;
-            } else if (subTasks.get(i).status == Status.DONE) {
-                countDone++;
-            }
         }
         this.setStartTime(firstTaskTime);
         this.endTime=lastTaskTime;
         this.setDuration(Duration.between(firstTaskTime,lastTaskTime));
-        if (countNew == subTasks.size()) return Status.NEW;
-        if (countDone == subTasks.size()) return Status.DONE;
-        return Status.IN_PROGRESS;
     }
 
     public LocalDateTime getEndTime() {

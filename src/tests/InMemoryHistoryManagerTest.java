@@ -27,12 +27,12 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void shouldReturn0History() {
+    void testSizeHistory() {
         Assertions.assertEquals(history.getHistory().size(), 0, "История не пуста");
     }
 
     @Test
-    void shouldReturn2Items() {
+    void testAddToHistory() {
         manager.getEpic(epic2.getId());
         manager.getEpic(epic1.getId());
         Assertions.assertEquals(history.getHistory().size(), 2, "Размер истории не равен 2");

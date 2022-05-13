@@ -23,12 +23,12 @@ class EpicTest {
     }
 
     @Test
-    void shouldReturnNewNoSub() {
+    void testStatusNoSub() {
         Assertions.assertEquals(Status.NEW, epic.getStatus(), "Статус не равен NEW");
     }
 
     @Test
-    void shouldReturnNewForNewSubtasks() {
+    void testStatusNew() {
         Subtask subtask1 = new Subtask("subtask1", "subtask1", Status.NEW, epic);
         manager.addSubTask(subtask1);
         Subtask subtask2 = new Subtask("subtask2", "subtask2", Status.NEW, epic);
@@ -37,7 +37,7 @@ class EpicTest {
     }
 
     @Test
-    void shouldReturnDoneForNewSubtasks() {
+    void testStatusDone() {
         Subtask subtask1 = new Subtask("subtask1", "subtask1", Status.DONE, epic);
         manager.addSubTask(subtask1);
         Subtask subtask2 = new Subtask("subtask2", "subtask2", Status.DONE, epic);
@@ -46,7 +46,7 @@ class EpicTest {
     }
 
     @Test
-    void shouldReturnInProgressForInProgressSubtasks() {
+    void testStatusInProgress() {
         Subtask subtask1 = new Subtask("subtask1", "subtask1", Status.IN_PROGRESS, epic);
         manager.addSubTask(subtask1);
         Subtask subtask2 = new Subtask("subtask2", "subtask2", Status.IN_PROGRESS, epic);
@@ -55,12 +55,11 @@ class EpicTest {
     }
 
     @Test
-    void shouldReturnInProgressForDifferentSubtasks() {
+    void testStatusInProgressDifferentSubs() {
         Subtask subtask1 = new Subtask("subtask1", "subtask1", Status.NEW, epic);
         manager.addSubTask(subtask1);
         Subtask subtask2 = new Subtask("subtask2", "subtask2", Status.DONE, epic);
         manager.addSubTask(subtask2);
         Assertions.assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Статус задачи не равен InProgress");
     }
-
 }

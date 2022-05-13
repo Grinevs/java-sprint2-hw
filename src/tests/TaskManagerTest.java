@@ -16,6 +16,12 @@ abstract class TaskManagerTest<T extends TaskManager> {
     Epic epic2 = new Epic("epic2", "epic2", Status.NEW);
     Task task1 = new Task("task1", "task1", Status.NEW);
     Task task2 = new Task("task2", "task2", Status.NEW);
+    Task task3 = new Task("UPDATE", "UPDATE", Status.IN_PROGRESS);
+    Epic epic3 = new Epic("UPDATE", "UPDATE", Status.NEW);
+    Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
+    Subtask subtask2 = new Subtask("NEW", "NEW", Status.NEW, epic1);
+
+    private static final String TEST_STRING_VALUE = "UPDATE";
 
     public TaskManagerTest(T manager) {
         this.manager = manager;
@@ -27,46 +33,43 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturnSavedTask() {
+    void testAddTask() {
         manager.addTask(task1);
         Assertions.assertNotNull(manager.getTask(task1.getId()), "task не добавился");
     }
 
     @Test
-    void ShouldReturn0SizeAfterRemove() {
+    void testRemoveAllHistory() {
         manager.removeAll();
         Assertions.assertEquals(manager.getTaskMap().size(), 0,
                 "Список Task должен быть пустой");
     }
 
     @Test
-    void ShouldEqualsArray() {
-        List<Task> testTasks = new ArrayList<>();
-        testTasks.add(task1);
-        testTasks.add(task2);
+    void testAddTasks() {
+        List<Task> expectedTask = List.of(task1, task2);
         manager.addTask(task1);
         manager.addTask(task2);
-        Assertions.assertArrayEquals(testTasks.toArray(), manager.getTaskMap().values().toArray(),
+        Assertions.assertArrayEquals(expectedTask.toArray(), manager.getTaskMap().values().toArray(),
                 "Массивы не равны");
     }
 
     @Test
-    void ShouldReturnUpdatedTask() {
+    void testUpdatedTask() {
         manager.addTask(task1);
-        Task task2 = new Task("UPDATE", "UPDATE", Status.IN_PROGRESS);
-        task2.setId(task1.getId());
+        task3.setId(task1.getId());
         Assertions.assertEquals(Status.NEW, task1.getStatus(), "задача уже изменена");
         Assertions.assertEquals(task1.getTitle(), "task1", "задача уже изменена");
-        manager.updateTask(task2, task1.getId());
+        manager.updateTask(task3, task1.getId());
         Assertions.assertNotNull(manager.getTask(task1.getId()), "Метод вернул null");
-        Assertions.assertEquals(task2.getId(), task1.getId(), "Id не совпадает");
+        Assertions.assertEquals(task3.getId(), task1.getId(), "Id не совпадает");
         task1 = manager.getTask(task1.getId());
         Assertions.assertEquals(task1.getStatus(), Status.IN_PROGRESS, "Статус не обновился");
-        Assertions.assertEquals(task1.getTitle(), "UPDATE", "Имя не обновилось");
+        Assertions.assertEquals(task1.getTitle(), TEST_STRING_VALUE, "Имя не обновилось");
     }
 
     @Test
-    void ShouldReturnNullTaskAfterDelete() {
+    void testNullTaskAfterDelete() {
         manager.addTask(task1);
         manager.removeTask(task1.getId());
         Assertions.assertEquals(manager.getTask(task1.getId()), null,
@@ -74,7 +77,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldEqualsSubtasksArrays() {
+    void testEqualsSubtasksArrays() {
         manager.addEpic(epic1);
         Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         Subtask subtask2 = new Subtask("NEW", "NEW", Status.NEW, epic1);
@@ -88,10 +91,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturn0SubtasksAfterRemove() {
+    void testSubtasksRemove() {
         manager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
-        Subtask subtask2 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         manager.addSubTask(subtask1);
         manager.addSubTask(subtask2);
         manager.removeAll();
@@ -100,10 +101,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturnSavedSubtask() {
+    void testSavedSubtask() {
         manager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
-        Subtask subtask2 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         manager.addSubTask(subtask1);
         manager.addSubTask(subtask2);
         Assertions.assertEquals(manager.getSubTask(subtask1.getId()), subtask1,
@@ -111,9 +110,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturnNullAfterDelete() {
+    void testNullAfterDelete() {
         manager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         manager.addSubTask(subtask1);
         manager.removeSubTask(subtask1.getId());
         Assertions.assertEquals(manager.getSubTask(subtask1.getId()), null,
@@ -121,9 +119,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void ShouldReturn0AfterRemove() {
+    void testSizeAfterRemove() {
         manager.addEpic(epic1);
-        Subtask subtask1 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         manager.addSubTask(subtask1);
         manager.removeEpic(epic1.getId());
         Assertions.assertEquals(manager.getEpicMap().values().size(), 0,
@@ -135,19 +132,18 @@ abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void updateEpic() {
         manager.addEpic(epic1);
-        epic2 = new Epic("UPDATE", "UPDATE", Status.NEW);
-        epic2.setId(epic1.getId());
-        Assertions.assertEquals(epic2.getStatus(), Status.NEW, "задача уже изменена");
-        Assertions.assertEquals(epic2.getTitle(), "UPDATE", "задача уже изменена");
+        epic3.setId(epic1.getId());
+        Assertions.assertEquals(epic3.getStatus(), Status.NEW, "задача уже изменена");
+        Assertions.assertEquals(epic3.getTitle(), TEST_STRING_VALUE, "задача уже изменена");
         manager.updateEpic(epic1, epic1.getId());
         Assertions.assertNotNull(manager.getEpic(epic1.getId()), "Метод вернул значение null");
-        Assertions.assertEquals(epic2.getId(), epic1.getId(), "Id не совпадает");
-        epic1 = manager.getEpic(epic2.getId());
-        Assertions.assertEquals(epic2.getTitle(), "UPDATE", "Имя не обновилось");
+        Assertions.assertEquals(epic3.getId(), epic1.getId(), "Id не совпадает");
+        epic1 = manager.getEpic(epic3.getId());
+        Assertions.assertEquals(epic3.getTitle(), TEST_STRING_VALUE, "Имя не обновилось");
     }
 
     @Test
-    void ShouldReturnNullEpicAndNullSubtaskAfterDelete() {
+    void testEpicRemove() {
         manager.addEpic(epic1);
         Subtask subtask3 = new Subtask("NEW", "NEW", Status.NEW, epic1);
         manager.addSubTask(subtask3);
