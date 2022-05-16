@@ -1,18 +1,15 @@
+package service;
+
 import model.Epic;
 import model.Status;
 import model.Task;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import service.FileBackedTasksManager;
-import service.HistoryManager;
-import service.Managers;
 
 import java.io.IOException;
 
 public class FileBackedTasksManagerTest extends TaskManagerTest {
-    Epic epic1 = new Epic("epic1", "epic1", Status.NEW);
-    Task task1 = new Task("task1", "task1", Status.NEW);
     FileBackedTasksManager fileManger = new FileBackedTasksManager();
     HistoryManager historyManager = Managers.getDefaultHistory();
 
@@ -29,6 +26,8 @@ public class FileBackedTasksManagerTest extends TaskManagerTest {
 
     @Test
     void readWriteTest() throws IOException {
+        Epic epic1 = new Epic("epic1", "epic1", Status.NEW);
+        Task task1 = new Task("task1", "task1", Status.NEW);
         manager.addTask(task1);
         manager.addEpic(epic1);
         manager.getTask(task1.getId());

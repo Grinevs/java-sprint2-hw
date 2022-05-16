@@ -1,4 +1,4 @@
-import service.Managers;
+package service;
 
 public class InMemoryTasksManagerTest extends TaskManagerTest {
 
