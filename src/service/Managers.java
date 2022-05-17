@@ -1,7 +1,7 @@
 package service;
 
 public class Managers {
-    private static TaskManager taskManagerDB;
+    private static FileBackedTasksManager taskManagerDB;
     private static TaskManager taskManager;
     private static HistoryManager historyManager;
     private static CounterId counterId;
@@ -13,7 +13,7 @@ public class Managers {
         return taskManager;
     }
 
-    public static TaskManager getDefaultDB() {
+    public static FileBackedTasksManager getDefaultDB() {
         if (taskManagerDB == null) {
             taskManagerDB = new FileBackedTasksManager();
         }
