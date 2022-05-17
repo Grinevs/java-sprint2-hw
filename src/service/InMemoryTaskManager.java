@@ -84,7 +84,7 @@ public class InMemoryTaskManager implements TaskManager {
         getPrioritizedTasks().forEach((task) -> System.out.println(task.toString()));
     }
 
-    public boolean isTimeNOTCrossing(Task task) {
+    public boolean isTimeNotCrossing(Task task) {
         for (Task t : getPrioritizedTasks()) {
             if ((t.getStartTime().isBefore(task.getStartTime()) && t.getEndTime().isAfter(task.getStartTime())) ||
                     (t.getStartTime().isBefore(t.getEndTime()) && t.getEndTime().isAfter(t.getEndTime()))) {
@@ -96,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addTask(Task task) {
-        if (isTimeNOTCrossing(task)) {
+        if (isTimeNotCrossing(task)) {
             taskMap.put(task.getId(), task);
         }
 
@@ -104,21 +104,21 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void addSubTask(Subtask subTask) {
-        if (isTimeNOTCrossing(subTask)) {
+        if (isTimeNotCrossing(subTask)) {
             subTaskMap.put(subTask.getId(), subTask);
         }
     }
 
     @Override
     public void addEpic(Epic epic) {
-        if (isTimeNOTCrossing(epic)) {
+        if (isTimeNotCrossing(epic)) {
             epicMap.put(epic.getId(), epic);
         }
     }
 
     @Override
     public void updateSubTask(Subtask subtask, int id) {
-        if (isTimeNOTCrossing(subtask)) {
+        if (isTimeNotCrossing(subtask)) {
             historyManager.remove(id);
             subtask.setId(id);
             subTaskMap.put(id, subtask);
@@ -128,7 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateTask(Task task, int id) {
-        if (isTimeNOTCrossing(task)) {
+        if (isTimeNotCrossing(task)) {
             historyManager.remove(id);
             task.setId(id);
             taskMap.put(id, task);
@@ -138,7 +138,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void updateEpic(Epic epic, int id) {
-        if (isTimeNOTCrossing(epic)) {
+        if (isTimeNotCrossing(epic)) {
             Epic oldEpic = epicMap.get(id);
             if (oldEpic != null) {
                 historyManager.remove(id);

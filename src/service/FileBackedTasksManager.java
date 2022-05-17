@@ -21,7 +21,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private static final String SUBTASK_STRING = "Subtask";
     private static final String SOURCE_DIR = "src";
     private static final String DB_DIR = "db";
-    private static final String DB_FILE = "db.csv";
     private static final int TASK_ID = 0;
     private static final int TASK_TYPE = 1;
     private static final int TASK_NAME = 2;
@@ -36,8 +35,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private final CounterId counterId = Managers.getCounterId();
     private final Path dbPath;
 
-    public FileBackedTasksManager() {
-        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, DB_FILE);
+    public FileBackedTasksManager(String dbFileName) {
+        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, dbFileName);
         readFile(this.dbPath);
     }
 

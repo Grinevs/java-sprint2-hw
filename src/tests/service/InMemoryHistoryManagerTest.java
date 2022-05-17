@@ -6,6 +6,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import service.HistoryManager;
+import service.Managers;
+import service.TaskManager;
 
 public class InMemoryHistoryManagerTest {
     TaskManager manager = Managers.getDefault();
