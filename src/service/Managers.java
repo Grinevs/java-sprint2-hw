@@ -15,7 +15,7 @@ public class Managers {
 
     public static FileBackedTasksManager getDefaultDB() {
         if (taskManagerDB == null) {
-            taskManagerDB = new FileBackedTasksManager("db.csv");
+            taskManagerDB = new HTTPTaskManager("http://localhost:8078");
         }
         return taskManagerDB;
     }

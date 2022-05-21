@@ -1,32 +1,22 @@
 import model.*;
 import service.*;
 
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         TaskManager inMemoryTaskManager = Managers.getDefault();
         TaskManager fileTaskManager = Managers.getDefaultDB();
-        System.out.println("записи из файла");
-        Managers.getDefault().printAllTask();
-        System.out.println("история из файла");
-        System.out.println(Managers.getDefaultHistory().getHistory());
-        // проверяем все через файлы
-        addTestObjects(fileTaskManager);
-        // тестовый код для изменния с доступом по id так как непределяем что саб что эпик а что таск
-//        System.out.println("Меняем статусы сабтасков");
-//        Subtask updateSub = new Subtask("updSUB", "С2", Status.NEW, inMemoryTaskManager.getEpic(2));
-//        fileTaskManager.updateSubTask(updateSub, 4);
-//        Task updateTask = new Task("updTask1", "1задание", Status.DONE);
-//        fileTaskManager.updateTask(updateTask, 0);
-//        Epic epicTask = new Epic("updEpic1", "Сjj", Status.DONE);
-//        fileTaskManager.updateEpic(epicTask, 3);
-//        fileTaskManager.printAllTask();
-//        System.out.println("Теперь удаление");
-//        fileTaskManager.removeEpic(2);
-//        fileTaskManager.removeTask(0);
-//        fileTaskManager.printAllTask();
-        System.out.println("записи в история локально в паияти");
-        inMemoryTaskManager.printSortByDateAllTasks();
-        System.out.println(Managers.getDefaultHistory().getHistory());
+      //  System.out.println("записи из файла");
+       // Managers.getDefault().printAllTask();
+      //  System.out.println("история из файла");
+      //  System.out.println(Managers.getDefaultHistory().getHistory());
+       // addTestObjects(fileTaskManager);
+       // System.out.println("записи в история локально в паияти");
+       // inMemoryTaskManager.printSortByDateAllTasks();
+      //  System.out.println(Managers.getDefaultHistory().getHistory());
+        new HttpTaskServer().create();
+        new KVServer().start();
     }
 
     public static void addTestObjects(TaskManager taskManager) {

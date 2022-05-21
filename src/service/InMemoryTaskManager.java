@@ -224,4 +224,18 @@ public class InMemoryTaskManager implements TaskManager {
         subTaskMap.clear();
     }
 
+    @Override
+    public void removeTasks() {
+        taskMap.clear();
+    }
+
+    @Override
+    public void removeEpics() {
+        epicMap.clear();
+    }
+
+    @Override
+    public void removeSubTasks() {
+        subTaskMap.clear();
+    }
 }

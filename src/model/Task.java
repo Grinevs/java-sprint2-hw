@@ -6,9 +6,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class Task {
-    private int id;
-    private String title;
-    private String description;
+    protected int id;
+    protected String title;
+    protected String description;
     protected Status status;
     protected Duration duration;
     protected LocalDateTime startTime;

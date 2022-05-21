@@ -6,7 +6,6 @@ import model.Subtask;
 import model.Task;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -33,15 +32,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private final TaskManager taskManager = Managers.getDefault();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final CounterId counterId = Managers.getCounterId();
-    private final Path dbPath;
+    private String dbPath;
 
     public FileBackedTasksManager(String dbFileName) {
-        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, dbFileName);
-        readFile(this.dbPath);
+        this.dbPath = dbFileName;
+        readFile(dbFileName);
+//        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, dbFileName);
+//        readFile(this.dbPath);
     }
 
-    public Path getUriDb() {
-        return dbPath;
+    public String getUriDb() {
+        return Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, "db.csv").toString();
     }
 
     public Task taskFromString(String value) {
@@ -84,7 +85,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
         }
     }
 
-    public void readFile(Path path) {
+    public void readFile(String path) {
+        if (path.startsWith("http")) return;
         try (FileReader reader = new FileReader(String.valueOf(path));
              BufferedReader br = new BufferedReader(reader)) {
             while (br.ready()) {
