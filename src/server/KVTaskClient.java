@@ -1,4 +1,4 @@
-package service;
+package server;
 
 import java.io.IOException;
 import java.net.URI;
@@ -30,11 +30,15 @@ public class KVTaskClient {
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-        apiKey = response.body();
+        this.apiKey = response.body();
+    }
+
+    public String getApiKey() {
+        return apiKey;
     }
 
     public void put(String key, String json) throws IOException, InterruptedException {
-        URI uri = URI.create(url + "/save/" + key + "?API_KEY=" + apiKey);
+        URI uri = URI.create(url + "/save/" + key + "?API_TOKEN=" + apiKey);
         HttpRequest request = HttpRequest
                 .newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -45,7 +49,7 @@ public class KVTaskClient {
     }
 
     public String load(String key) throws IOException, InterruptedException {
-        URI uri = URI.create(url + "/load/"+key+"?API_KEY=" + apiKey);
+        URI uri = URI.create(url + "/load/"+key+"?API_TOKEN=" + apiKey);
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder();
         request = requestBuilder
                 .GET()

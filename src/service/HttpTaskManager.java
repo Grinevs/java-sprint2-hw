@@ -6,20 +6,20 @@ import com.google.gson.JsonObject;
 import model.Epic;
 import model.Subtask;
 import model.Task;
+import server.KVTaskClient;
 
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HTTPTaskManager extends FileBackedTasksManager {
-    private KVTaskClient kvsClient;
+public class HttpTaskManager extends FileBackedTasksManager {
+    private final KVTaskClient kvsClient;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final Gson gson = new Gson();
 
-    public HTTPTaskManager(String url) {
+    public HttpTaskManager(String url) {
         super(url);
         this.kvsClient = new KVTaskClient(url);
         loadFromKVS();
@@ -28,6 +28,7 @@ public class HTTPTaskManager extends FileBackedTasksManager {
     public void loadFromKVS() {
         try {
             JsonObject data = gson.fromJson(kvsClient.load("KVS"), JsonObject.class);
+            System.out.println(data);
             if (data == null) return;
             JsonArray tasks = data.getAsJsonArray("tasks");
             tasks.forEach(task -> {
@@ -46,6 +47,8 @@ public class HTTPTaskManager extends FileBackedTasksManager {
             });
             JsonArray history = data.getAsJsonArray("history");
             history.forEach(task -> historyManager.add(gson.fromJson(task, Task.class)));
+            System.out.println("adad");
+            System.out.println(Managers.getDefault().getEpicMap());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -70,4 +73,5 @@ public class HTTPTaskManager extends FileBackedTasksManager {
             e.printStackTrace();
         }
     }
+
 }

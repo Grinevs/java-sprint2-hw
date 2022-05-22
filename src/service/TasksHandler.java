@@ -1,6 +1,7 @@
 package service;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import model.Epic;
@@ -14,7 +15,9 @@ import java.io.OutputStream;
 public class TasksHandler implements HttpHandler {
     private TaskManager manager = Managers.getDefault();
     private HistoryManager history = Managers.getDefaultHistory();
-    private Gson gson = new Gson();
+    public static Gson gson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
     @Override
     public void handle(HttpExchange httpExchange) throws IOException {
@@ -30,9 +33,11 @@ public class TasksHandler implements HttpHandler {
 
         switch (method) {
             case "GET":
-                response = (arrUri.length == 2) ?
-                        gson.toJson(manager.getAllTaskMap().values()) :
-                        "";
+                if ((arrUri.length == 2) && arrUri[1].equals("tasks")) {
+                    response = gson.toJson(manager.getAllTaskMap().values());
+                    httpExchange.sendResponseHeaders(200, 0);
+                    break;
+                }
                 if (arrUri[2].equals("epic")) {
                     response = (id != 0) ? gson.toJson(manager.getEpic(id)) :
                             gson.toJson(manager.getEpicMap().values());
@@ -44,10 +49,9 @@ public class TasksHandler implements HttpHandler {
                 if (arrUri[2].equals("subtask")) {
                     response = (id != 0) ? gson.toJson(manager.getSubTask(id)) :
                             gson.toJson(manager.getSubTaskMap().values());
-                    System.out.println(manager.getSubTaskMap().values());
                 }
                 if (arrUri[2].equals("history")) {
-                    gson.toJson(history.getHistory());
+                    response = gson.toJson(history.getHistory());
                 }
                 if (arrUri.length == 5 && arrUri[2].equals("subtask") && arrUri[3].equals("epic")) {
                     response = gson.toJson(manager.getEpic(manager.getSubTask(id).getEpicId()));

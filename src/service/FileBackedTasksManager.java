@@ -6,6 +6,7 @@ import model.Subtask;
 import model.Task;
 
 import java.io.*;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -32,13 +33,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
     private final TaskManager taskManager = Managers.getDefault();
     private final HistoryManager historyManager = Managers.getDefaultHistory();
     private final CounterId counterId = Managers.getCounterId();
-    private String dbPath;
+    private Path dbPath;
 
     public FileBackedTasksManager(String dbFileName) {
-        this.dbPath = dbFileName;
-        readFile(dbFileName);
-//        this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, dbFileName);
-//        readFile(this.dbPath);
+        if (dbFileName.startsWith("http") || dbFileName.startsWith("https")) {
+            readFile(dbFileName);
+        } else {
+            this.dbPath = Paths.get(WORK_DIR, SOURCE_DIR, DB_DIR, dbFileName);
+            readFile(String.valueOf(this.dbPath));
+        }
     }
 
     public String getUriDb() {
@@ -87,7 +90,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
 
     public void readFile(String path) {
         if (path.startsWith("http")) return;
-        try (FileReader reader = new FileReader(String.valueOf(path));
+        try (FileReader reader = new FileReader(path);
              BufferedReader br = new BufferedReader(reader)) {
             while (br.ready()) {
                 String line = br.readLine().trim();
@@ -118,6 +121,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager implements TaskM
             for (Task task : taskMap) {
                 bw.write(task.getId() + ITEM_DELIMITER);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void clearFile() {
+        try (FileWriter writer = new FileWriter(String.valueOf(getUriDb()));
+             BufferedWriter bw = new BufferedWriter(writer)) {
+                bw.write("");
         } catch (IOException e) {
             e.printStackTrace();
         }

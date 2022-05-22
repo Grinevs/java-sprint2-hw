@@ -2,6 +2,7 @@ package service;
 
 public class Managers {
     private static FileBackedTasksManager taskManagerDB;
+    private static HttpTaskManager taskManagerHTTP;
     private static TaskManager taskManager;
     private static HistoryManager historyManager;
     private static CounterId counterId;
@@ -15,9 +16,16 @@ public class Managers {
 
     public static FileBackedTasksManager getDefaultDB() {
         if (taskManagerDB == null) {
-            taskManagerDB = new HTTPTaskManager("http://localhost:8078");
+            taskManagerDB = new FileBackedTasksManager("db.csv");
         }
         return taskManagerDB;
+    }
+
+    public static HttpTaskManager getDefaultHTTP() {
+        if (taskManagerHTTP == null) {
+            taskManagerHTTP = new HttpTaskManager("http://localhost:8078");
+        }
+        return taskManagerHTTP;
     }
 
     public static HistoryManager getDefaultHistory() {

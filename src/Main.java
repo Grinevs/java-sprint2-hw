@@ -1,38 +1,39 @@
-import model.*;
-import service.*;
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
+import server.HttpTaskServer;
+import server.KVServer;
+import service.Managers;
+import service.TaskManager;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        TaskManager inMemoryTaskManager = Managers.getDefault();
         TaskManager fileTaskManager = Managers.getDefaultDB();
-      //  System.out.println("записи из файла");
-       // Managers.getDefault().printAllTask();
-      //  System.out.println("история из файла");
-      //  System.out.println(Managers.getDefaultHistory().getHistory());
-       // addTestObjects(fileTaskManager);
-       // System.out.println("записи в история локально в паияти");
-       // inMemoryTaskManager.printSortByDateAllTasks();
-      //  System.out.println(Managers.getDefaultHistory().getHistory());
+        addTestObjects(fileTaskManager);
         new HttpTaskServer().create();
-        new KVServer().start();
+        KVServer kvs = new KVServer();
+        kvs.start();
+        kvs.loadStartDataFromFile();
+        TaskManager httpTaskManager = Managers.getDefaultHTTP();
     }
 
     public static void addTestObjects(TaskManager taskManager) {
         Task newTask = new Task("Task1", "1задание", Status.NEW);
-        Task newTask1 = new Task("Task2", "задание2", Status.DONE);
-        Epic epicTask = new Epic("epicTask1", "С", Status.DONE);
-        Epic epicTask2 = new Epic("epicTask2", "С", Status.IN_PROGRESS);
-        Subtask subTask = new Subtask("Яндекс subTask1", "е", Status.DONE, epicTask);
-        Subtask subTask2 = new Subtask("Яндекс subTask2", "5", Status.NEW, epicTask);
-        Subtask subTask3 = new Subtask("Яндекс subTask3", "5", Status.DONE, epicTask2);
         taskManager.updateTask(newTask, newTask.getId());
+        Task newTask1 = new Task("Task2", "задание2", Status.DONE);
         taskManager.updateTask(newTask1, newTask1.getId());
+        Epic epicTask = new Epic("epicTask1", "С", Status.DONE);
         taskManager.updateEpic(epicTask, epicTask.getId());
+        Epic epicTask2 = new Epic("epicTask2", "С", Status.IN_PROGRESS);
         taskManager.updateEpic(epicTask2, epicTask2.getId());
+        Subtask subTask = new Subtask("Яндекс subTask1", "е", Status.DONE, epicTask);
         taskManager.updateSubTask(subTask, subTask.getId());
+        Subtask subTask2 = new Subtask("Яндекс subTask2", "5", Status.NEW, epicTask);
         taskManager.updateSubTask(subTask2, subTask2.getId());
+        Subtask subTask3 = new Subtask("Яндекс subTask3", "5", Status.DONE, epicTask2);
         taskManager.updateSubTask(subTask3, subTask3.getId());
     }
 }
